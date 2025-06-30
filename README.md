@@ -36,7 +36,7 @@ Untuk menjalankan proyek ini di Xcode, ikuti langkah-langkah berikut:
 1.  **Clone Repositori**
     Buka Terminal dan jalankan perintah berikut untuk mengunduh proyek ke komputer Anda:
     ```bash
-    git clone [URL_REPOSITORI_ANDA_DI_SINI]
+    git clone [https://github.com/Awftzky/SEA-CATERING.git]
     ```
     Atau, unduh file ZIP proyek dan ekstrak di lokasi yang Anda inginkan.
 
