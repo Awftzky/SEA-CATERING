@@ -1,23 +1,21 @@
 import SwiftUI
 
 struct RegistrationView: View {
-    
-    @Binding var isLoggedIn: Bool
+
+    @EnvironmentObject var Authentication : AuthData
 
     @State private var fullName: String = ""
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var confirmPassword: String = ""
-    @State private var passwordError: String? = nil // State untuk pesan error kata sandi
+    @State private var passwordError: String? = nil
 
-    // Properti untuk memeriksa apakah form valid
     private var isFormValid: Bool {
         !fullName.isEmpty && !email.isEmpty && !password.isEmpty && password == confirmPassword
     }
 
     var body: some View {
         VStack(spacing: 20) {
-            // MARK: - Logo
             Image("SEACatering")
                 .resizable()
                 .scaledToFit()
@@ -30,7 +28,7 @@ struct RegistrationView: View {
                 .padding(.horizontal)
                 .padding(.top, 30)
 
-            Text("Sign In")
+            Text("Sign Up")
                 .font(.title)
                 .fontWeight(.bold)
                 .foregroundStyle(
@@ -69,13 +67,12 @@ struct RegistrationView: View {
                 .cornerRadius(10)
                 .textContentType(.newPassword)
 
-            // Menampilkan pesan error jika kata sandi tidak cocok
             if let error = passwordError {
                 Text(error)
                     .font(.caption)
                     .foregroundColor(.red)
             }
-            
+
             Button {
                 validateAndRegister()
             } label: {
@@ -84,11 +81,11 @@ struct RegistrationView: View {
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(isFormValid ? Color.green : Color.gray) // Warna tombol dinamis
+                    .background(isFormValid ? Color.green : Color.gray)
                     .cornerRadius(10)
             }
-            .disabled(!isFormValid) // Nonaktifkan tombol jika form tidak valid
-            
+            .disabled(!isFormValid)
+
             Spacer()
         }
         .padding(.horizontal, 20)
@@ -96,24 +93,24 @@ struct RegistrationView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 
-    // Fungsi untuk validasi dan registrasi
     private func validateAndRegister() {
         if password != confirmPassword {
             passwordError = "Kata sandi tidak cocok."
             return
         }
-        
+
         passwordError = nil
-        
+
         print("Mencoba mendaftar dengan email: \(email)")
-       
-        self.isLoggedIn = true
+
+        Authentication.isLoggedIn = true
+        Authentication.isCorrect = true
     }
 }
 
-// MARK: - Previews
 struct RegistrationView_Previews: PreviewProvider {
     static var previews: some View {
-        RegistrationView(isLoggedIn: .constant(false))
+        RegistrationView()
+            .environmentObject(AuthData())
     }
 }
