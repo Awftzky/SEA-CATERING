@@ -1,14 +1,22 @@
 import SwiftUI
 
 struct LoginView: View {
-    @Binding var isLoggedIn: Bool
-    
+    @EnvironmentObject var Authentication : AuthData
     @State private var email: String = ""
     @State private var password: String = ""
 
+    func CheckLogin() {
+        if ( email == "user@mail.com" && password == "123") {
+            Authentication.isLoggedIn = true
+            Authentication.isCorrect = true
+        } else {
+            Authentication.isLoggedIn = false
+            Authentication.isCorrect = false
+        }
+    }
+
     var body: some View {
         VStack(spacing: 20) {
-            // MARK: - Logo
             Image("SEACatering")
                 .resizable()
                 .scaledToFit()
@@ -20,8 +28,7 @@ struct LoginView: View {
                 .shadow(color: .green.opacity(0.2), radius: 10)
                 .padding(.horizontal)
                 .padding(.top, 30)
-            
-            // MARK: - Title
+
             Text("Sign In")
                 .font(.title)
                 .fontWeight(.bold)
@@ -34,7 +41,6 @@ struct LoginView: View {
                 )
                 .shadow(color: .white, radius: 2)
 
-            // MARK: - Input Fields
             VStack(spacing: 15) {
                 Text("Username/Email")
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -44,27 +50,29 @@ struct LoginView: View {
                     .cornerRadius(10)
                     .autocapitalization(.none)
                     .keyboardType(.emailAddress)
-                
+
                 Text("Password")
                     .frame(maxWidth: .infinity, alignment: .leading)
                 SecureField("Password...", text: $password)
                     .padding()
                     .background(Color(UIColor.systemGray6))
                     .cornerRadius(10)
-                
+
+                if (!Authentication.isCorrect) {
+                    Text("Wrong Email or Password").foregroundStyle(Color.red)
+                }
+
                 Button("Forgot Password?") {
                     print("Forgot Password tapped")
                 }
                 .font(.subheadline)
                 .foregroundStyle(Color.blue)
-                .frame(maxWidth: .infinity, alignment: .trailing)
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding(.horizontal, 20)
 
-            // MARK: - Main Login Button
             Button {
-                print("Login tapped")
-                self.isLoggedIn = true
+                self.CheckLogin()
             } label: {
                 Text("Login")
                     .foregroundStyle(Color.white).font(.headline).bold()
@@ -89,7 +97,8 @@ struct LoginView: View {
             VStack(spacing: 10) {
                 Button(action: {
                     print("Login with Apple")
-                    self.isLoggedIn = true
+                    Authentication.isLoggedIn = true
+                    Authentication.isCorrect = true
                 }) {
                     HStack {
                         Image(systemName: "apple.logo")
@@ -97,10 +106,11 @@ struct LoginView: View {
                     }
                 }
                 .buttonStyle(SocialLoginButtonStyle(backgroundColor: .black, foregroundColor: .white))
-                
+
                 Button(action: {
                     print("Login with Google")
-                    self.isLoggedIn = true
+                    Authentication.isLoggedIn = true
+                    Authentication.isCorrect = true
                 }) {
                     HStack {
                         Image("Google")
@@ -113,7 +123,7 @@ struct LoginView: View {
                 .buttonStyle(SocialLoginButtonStyle(backgroundColor: .white, foregroundColor: .black, hasBorder: true))
             }
             .padding(.horizontal, 20)
-            
+
             Spacer()
         }
     }
@@ -123,7 +133,7 @@ struct SocialLoginButtonStyle: ButtonStyle {
     var backgroundColor: Color
     var foregroundColor: Color
     var hasBorder: Bool = false
-    
+
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.headline)
@@ -141,6 +151,7 @@ struct SocialLoginButtonStyle: ButtonStyle {
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView(isLoggedIn: .constant(false))
+        LoginView()
+            .environmentObject(AuthData())
     }
 }

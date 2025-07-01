@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MainDashboardView: View {
     @State private var isAdmin: Bool = false
+    @EnvironmentObject var Authentication : AuthData
 
     var body: some View {
         NavigationView {
