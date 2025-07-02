@@ -55,7 +55,13 @@ Untuk menjalankan proyek ini di Xcode, ikuti langkah-langkah berikut:
 5.  **Jalankan Aplikasi**
     -   Tekan tombol **Run** (ikon ►) di pojok kiri atas jendela Xcode.
     -   Atau, gunakan pintasan keyboard **`Cmd + R`**.
+  
+6. **User & Password**
+   - Email : "user@mail.com"
+   - Password = "123"
 
 Xcode akan membangun (build) aplikasi dan meluncurkannya di simulator atau perangkat yang Anda pilih.
+
+
 
 Terima kasih telah meninjau proyek ini!
